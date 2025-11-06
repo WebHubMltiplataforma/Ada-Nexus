@@ -1,0 +1,43 @@
+{
+  "network": "preprod",
+  "blockfrost": {
+    "projectId": "preprod_your_project_id_here",
+    "baseUrl": "https://cardano-preprod.blockfrost.io/api/v0"
+  },
+  "contracts": {
+    "marketplace": {
+      "address": "addr_test1...",
+      "scriptHash": "script1...",
+      "version": "1.0.0"
+    },
+    "dex": {
+      "address": "addr_test1...",
+      "scriptHash": "script1...",
+      "version": "1.0.0"
+    },
+    "payments": {
+      "address": "addr_test1...",
+      "scriptHash": "script1...",
+      "version": "1.0.0"
+    }
+  },
+  "api": {
+    "port": 3001,
+    "corsOrigins": ["http://localhost:5173", "https://ada-nexus.io"],
+    "rateLimit": {
+      "windowMs": 900000,
+      "max": 100
+    }
+  },
+  "database": {
+    "url": "mongodb://localhost:27017/ada-nexus-preprod",
+    "options": {
+      "useNewUrlParser": true,
+      "useUnifiedTopology": true
+    }
+  },
+  "ipfs": {
+    "gateway": "https://ipfs.io/ipfs/",
+    "apiKey": "your_web3_storage_key"
+  }
+}

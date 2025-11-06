@@ -1,0 +1,155 @@
+/* Estilos para el Logo SVG */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.ada-nexus-logo.animated .logo-square {
+  animation: rotate 8s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.ada-nexus-logo.animated .logo-bolt {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.ada-nexus-logo.animated .particle {
+  animation: float 3s ease-in-out infinite;
+}
+
+.ada-nexus-logo.animated .particle-1 { animation-delay: 0s; }
+.ada-nexus-logo.animated .particle-2 { animation-delay: 0.5s; }
+.ada-nexus-logo.animated .particle-3 { animation-delay: 1s; }
+.ada-nexus-logo.animated .particle-4 { animation-delay: 1.5s; }
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00a3ff 0%, #7b61ff 50%, #00d395 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animaciones */
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); opacity: 1; }
+  50% { transform: translateY(-5px); opacity: 0.7; }
+}
+
+/* Estilos para el Logo CSS */
+.css-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.css-logo {
+  width: 40px;
+  height: 40px;
+  perspective: 1000px;
+}
+
+.logo-base {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.css-logo-container.animated .logo-base {
+  animation: spin-3d 6s linear infinite;
+}
+
+.logo-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(25deg) rotateY(25deg);
+}
+
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #00a3ff;
+  background: rgba(0, 163, 255, 0.1);
+}
+
+.front  { transform: rotateY(0deg) translateZ(20px); }
+.back   { transform: rotateY(180deg) translateZ(20px); }
+.left   { transform: rotateY(-90deg) translateZ(20px); }
+.right  { transform: rotateY(90deg) translateZ(20px); }
+.top    { transform: rotateX(90deg) translateZ(20px); }
+.bottom { transform: rotateX(-90deg) translateZ(20px); }
+
+.logo-bolt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(45deg, #00d395, #7b61ff);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  transform: translate(-50%, -50%);
+  animation: bolt-pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin-3d {
+  0% { transform: rotateX(25deg) rotateY(25deg); }
+  25% { transform: rotateX(25deg) rotateY(115deg); }
+  50% { transform: rotateX(115deg) rotateY(115deg); }
+  75% { transform: rotateX(115deg) rotateY(25deg); }
+  100% { transform: rotateX(25deg) rotateY(25deg); }
+}
+
+@keyframes bolt-pulse {
+  0%, 100% { 
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Logo Simple para Footer */
+.simple-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.simple-logo-icon {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #00a3ff, #7b61ff);
+  border-radius: 4px;
+  position: relative;
+}
+
+.simple-logo-icon::after {
+  content: "⚡";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  color: white;
+}

@@ -1,0 +1,51 @@
+cabal-version: 3.4
+name:          ada-nexus-contracts
+version:       1.0.0
+description:   ADA Nexus Smart Contracts
+
+library
+    exposed-modules:
+        AdaNexus.Marketplace.Validator
+        AdaNexus.Marketplace.Royalty
+        AdaNexus.Marketplace.Types
+        AdaNexus.Dex.PoolValidator
+        AdaNexus.Dex.SwapValidator
+        AdaNexus.Dex.Types
+        AdaNexus.Payments.Subscription
+        AdaNexus.Payments.Types
+        AdaNexus.Identity.DIDValidator
+        AdaNexus.Identity.Types
+    
+    build-depends:
+        base ==4.17.*,
+        plutus-tx,
+        plutus-ledger-api,
+        plutus-contract,
+        cardano-api,
+        aeson
+    
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable ada-nexus-contracts-exe
+    main-is:          Main.hs
+    build-depends:
+        base ==4.17.*,
+        ada-nexus-contracts,
+        plutus-tx,
+        plutus-ledger-api
+    
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
+test-suite ada-nexus-contracts-test
+    type:             exitcode-stdio-1.0
+    main-is:          Spec.hs
+    build-depends:
+        base ==4.17.*,
+        ada-nexus-contracts,
+        hspec,
+        plutus-tx
+    
+    hs-source-dirs:   test
+    default-language: Haskell2010

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADA Nexus - Cardano Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header */
+        .header {
+            background: #1e293b;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #334155;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00a3ff;
+        }
+        
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .welcome-title {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #00a3ff, #7b61ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+        
+        .welcome-text {
+            font-size: 1.2rem;
+            color: #cbd5e1;
+            margin-bottom: 3rem;
+        }
+        
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: #00a3ff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Buttons */
+        .connect-btn {
+            background: #00d395;
+            color: white;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .connect-btn:hover {
+            background: #00b383;
+            transform: translateY(-2px);
+        }
+        
+        .action-btn {
+            background: #00a3ff;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: background 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: #0077cc;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: #1e293b;
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+        
+        .tab {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #cbd5e1;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .tab.active {
+            background: #0033ad;
+            color: white;
+        }
+        
+        .tab-content {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 12px;
+            min-height: 400px;
+        }
+        
+        .balance-card {
+            background: linear-gradient(135deg, #0033ad, #7b61ff);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .balance-main {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .amount {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        
+        .currency {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        .asset {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1e293b;
+            padding: 2rem;
+            text-align: center;
+            color: #cbd5e1;
+            border-top: 2px solid #334155;
+        }
+        
+        /* Demo Note */
+        .demo-note {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffb800;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ffb800;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">⚡ ADA Nexus</div>
+            <div id="walletInfo" style="display: none;">
+                <span>Balance: <span id="balanceAmount">0</span> ADA</span>
+                <button class="action-btn" onclick="disconnectWallet()" style="background: #dc2626; margin-left: 1rem;">
+                    Disconnect
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen">
+                <h1 class="welcome-title">🚀 Welcome to ADA Nexus</h1>
+                <p class="welcome-text">Your Complete Cardano dApp Platform</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">🦭</div>
+                        <h3>Wallet Integration</h3>
+                        <p>Connect with Nami, Eternl, Flint and other Cardano wallets</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎨</div>
+                        <h3>NFT Marketplace</h3>
+                        <p>Create, buy and sell NFTs with guaranteed royalties</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">💱</div>
+                        <h3>DEX Trading</h3>
+                        <p>Swap tokens instantly with low fees and high liquidity</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🔁</div>
+                        <h3>P2P Trading</h3>
+                        <p>Trade directly with other users securely</p>
+                    </div>
+                </div>
+
+                <button class="connect-btn" onclick="connectWallet()">
+                    🔗 Connect Wallet (Demo Mode)
+                </button>
+                
+                <div class="demo-note">
+                    🔥 <strong>Live Demo</strong> - Fully interactive interface
+                </div>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="dashboard" class="dashboard">
+                <!-- Navigation Tabs -->
+                <nav class="tabs">
+                    <button class="tab active" onclick="switchTab('wallet')">🦭 Wallet</button>
+                    <button class="tab" onclick="switchTab('marketplace')">🎨 Marketplace</button>
+                    <button class="tab" onclick="switchTab('dex')">💱 DEX</button>
+                    <button class="tab" onclick="switchTab('p2p')">🔁 P2P</button>
+                    <button class="tab" onclick="switchTab('token')">🪙 Token</button>
+                </nav>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Wallet Tab -->
+                    <div id="walletTab" class="tab-panel">
+                        <h2>💰 Wallet Dashboard</h2>
+                        <div class="balance-card">
+                            <div class="balance-main">
+                                <span class="amount" id="walletBalance">125.75</span>
+                                <span class="currency">ADA</span>
+                            </div>
+                            <p>Available Balance</p>
+                        </div>
+
+                        <div style="margin-bottom: 2rem;">
+                            <h3>📊 Your Assets</h3>
+                            <div class="asset">
+                                <span>NEXUS Token</span>
+                                <span>1,000,000</span>
+                            </div>
+                            <div class="asset">
+                                <span>ADA</span>
+                                <span>125.75</span>
+                            </div>
+                            <div class="asset">
+                                <span>MIN Token</span>
+                                <span>5,000</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <button class="action-btn" onclick="showModal('receive')">📥 Receive</button>
+                            <button class="action-btn" onclick="showModal('send')">📤 Send</button>
+                            <button class="action-btn" onclick="switchTab('dex')">🔄 Swap</button>
+                        </div>
+                    </div>
+
+                    <!-- Marketplace Tab -->
+                    <div id="marketplaceTab" class="tab-panel" style="display: none;">
+                        <h2>🎨 NFT Marketplace</h2>
+                        <p>Discover and collect extraordinary NFTs</p>
+                        
+                        <div class="features" style="margin-top: 2rem;">
+                            <div class="feature">
+                                <div style="height: 150px; background: linear-gradient(135deg, #0033ad, #00a3ff); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 1rem;">🖼️</div>
+                                <h3>Cardano Warrior #1</h3>
+                                <p>Price: 100 ADA</p>
+                                <button class="action-btn" onclick="buyNFT('Cardano Warrior')">Buy Now</button>
+                            </div>
+                            <div class="feature">
+                                <div style="height: 150px; background: linear-gradient(135deg, #7b61ff, #00d395); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 1rem;">🎨</div>
+                                <h3>Digital Art Piece</h3>
+                                <p>Price: 75 ADA</p>
+                                <button class="action-btn" onclick="buyNFT('Digital Art')">Buy Now</button>
+                            </div>
+                            <div class="feature">
+                                <div style="height: 150px; background: linear-gradient(135deg, #ff6b6b, #ffa726); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 4rem; margin-bottom: 1rem;">⚡</div>
+                                <h3>ADA Nexus Exclusive</h3>
+                                <p>Price: 250 ADA</p>
+                                <button class="action-btn" onclick="buyNFT('ADA Nexus Exclusive')">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DEX Tab -->
+                    <div id="dexTab" class="tab-panel" style="display: none;">
+                        <h2>💱 Decentralized Exchange</h2>
+                        <p>Swap tokens instantly</p>
+                        
+                        <div style="max-width: 400px; margin: 2rem auto; background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px;">
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                                <input type="number" value="100" style="flex: 1; padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #334155; border-radius: 6px; color: white; font-size: 1.1rem;">
+                                <select style="background: #0033ad; color: white; border: none; padding: 1rem; border-radius: 6px; cursor: pointer;">
+                                    <option>ADA</option>
+                                    <option>NEXUS</option>
+                                    <option>MIN</option>
+                                </select>
+                            </div>
+                            
+                            <div style="text-align: center; font-size: 1.5rem; margin: 1rem 0; color: #00a3ff;">↓</div>
+                            
+                            <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                                <input type="number" value="450" style="flex: 1; padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #334155; border-radius: 6px; color: white; font-size: 1.1rem;">
+                                <select style="background: #0033ad; color: white; border: none; padding: 1rem; border-radius: 6px; cursor: pointer;">
+                                    <option>NEXUS</option>
+                                    <option>ADA</option>
+                                    <option>MIN</option>
+                                </select>
+                            </div>
+                            
+                            <button class="connect-btn" style="width: 100%; margin: 0;" onclick="swapTokens()">💫 Swap Tokens</button>
+                        </div>
+                    </div>
+
+                    <!-- P2P Tab -->
+                    <div id="p2pTab" class="tab-panel" style="display: none;">
+                        <h2>🔁 P2P Trading</h2>
+                        <p>Trade directly with other users</p>
+                        
+                        <div class="features" style="margin-top: 2rem;">
+                            <div class="feature">
+                                <div style="display: flex; justify-content: between; margin-bottom: 1rem;">
+                                    <span><strong>Seller:</strong> CryptoTrader</span>
+                                    <span style="background: rgba(255,193,7,0.2); color: #ffb800; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.9rem;">⭐ 4.8</span>
+                                </div>
+                                <p>💎 Selling: 1,000 NEXUS</p>
+                                <p>💰 Price: $0.15 per token</p>
+                                <p>🏦 Payment: Bank Transfer</p>
+                                <button class="action-btn" style="width: 100%; margin-top: 1rem;" onclick="startTrade('CryptoTrader')">🛒 Buy Now</button>
+                            </div>
+                            <div class="feature">
+                                <div style="display: flex; justify-content: between; margin-bottom: 1rem;">
+                                    <span><strong>Seller:</strong> AdaWhale</span>
+                                    <span style="background: rgba(255,193,7,0.2); color: #ffb800; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.9rem;">⭐ 4.9</span>
+                                </div>
+                                <p>💎 Selling: 5,000 ADA</p>
+                                <p>💰 Price: $0.45 per ADA</p>
+                                <p>🏦 Payment: PayPal</p>
+                                <button class="action-btn" style="width: 100%; margin-top: 1rem;" onclick="startTrade('AdaWhale')">🛒 Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Token Tab -->
+                    <div id="tokenTab" class="tab-panel" style="display: none;">
+                        <h2>🪙 Create Your Token</h2>
+                        <p>Launch your own token on Cardano</p>
+                        
+                        <div style="max-width: 400px; margin: 2rem auto; display: flex; flex-direction: column; gap: 1rem;">
+                            <input type="text" placeholder="Token Name" value="NexusToken" style="padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #334155; border-radius: 6px; color: white;">
+                            <input type="text" placeholder="Token Symbol" value="NEX" style="padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #334155; border-radius: 6px; color: white;">
+                            <input type="number" placeholder="Total Supply" value="1000000" style="padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #334155; border-radius: 6px; color: white;">
+                            <input type="number" placeholder="Decimals" value="6" style="padding: 1rem; background: rgba(255,255,255,0.1); border: 1px solid #334155; border-radius: 6px; color: white;">
+                            <button class="connect-btn" style="width: 100%; margin: 0;" onclick="createToken()">🚀 Create Token</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2024 ADA Nexus - Built on Cardano 🌐</p>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        console.log('🚀 ADA Nexus loaded successfully!');
+        
+        // Estado de la aplicación
+        let isConnected = false;
+        
+        // Conectar wallet
+        function connectWallet() {
+            console.log('🔗 Connecting wallet...');
+            isConnected = true;
+            
+            // Mostrar dashboard
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('walletInfo').style.display = 'flex';
+            
+            // Actualizar balance
+            document.getElementById('balanceAmount').textContent = '125.75';
+            document.getElementById('walletBalance').textContent = '125.75';
+            
+            alert('🎉 Wallet connected successfully!\nDemo mode activated.');
+        }
+        
+        // Desconectar wallet
+        function disconnectWallet() {
+            console.log('🔌 Disconnecting wallet...');
+            isConnected = false;
+            
+            // Mostrar welcome screen
+            document.getElementById('welcomeScreen').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('walletInfo').style.display = 'none';
+            
+            alert('👋 Wallet disconnected.');
+        }
+        
+        // Cambiar pestañas
+        function switchTab(tabName) {
+            console.log('📁 Switching to tab:', tabName);
+            
+            // Remover clase active de todas las pestañas
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Ocultar todos los paneles
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.style.display = 'none';
+            });
+            
+            // Activar pestaña seleccionada
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            
+            // Mostrar panel correspondiente
+            document.getElementById(tabName + 'Tab').style.display = 'block';
+        }
+        
+        // Funciones de demo
+        function buyNFT(nftName) {
+            alert(`🎨 You bought ${nftName} for 100 ADA!\n(This is a demo transaction)`);
+        }
+        
+        function swapTokens() {
+            alert(`💫 Tokens swapped successfully!\n100 ADA → 450 NEXUS\n(This is a demo transaction)`);
+        }
+        
+        function startTrade(seller) {
+            alert(`🤝 Trade started with ${seller}!\nCheck your messages to complete the transaction.\n(This is a demo)`);
+        }
+        
+        function createToken() {
+            alert(`🪙 Token created successfully!\nNexusToken (NEX) is now live!\n(This is a demo)`);
+        }
+        
+        function showModal(type) {
+            if (type === 'receive') {
+                alert(`📥 Your receive address:\naddr1qxy...zabc\n\nShare this address to receive funds.`);
+            } else if (type === 'send') {
+                alert(`📤 Send functionality\n\nIn a real application, this would open a send form.`);
+            }
+        }
+        
+        // Inicializar primera pestaña
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ DOM fully loaded');
+            switchTab('wallet');
+        });
+    </script>
+</body>
+</html>
